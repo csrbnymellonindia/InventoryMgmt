@@ -1,12 +1,17 @@
 package com.example.demo.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
+@Data
 @Table(name = "category")
+@NoArgsConstructor
+@AllArgsConstructor
 public class Category {
     @Id
     @Column(name = "category_id")
@@ -15,19 +20,11 @@ public class Category {
     @Column(name = "category_name")
     private String categoryName;
 
-    public Integer getCategoryId() {
-        return categoryId;
-    }
+    @OneToMany(mappedBy = "category")
+    private List<Inventory> assets;
 
-    public void setCategoryId(Integer categoryId) {
-        this.categoryId = categoryId;
-    }
 
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public Category(Integer categoryId) {
+        this.setCategoryId(categoryId);
     }
 }

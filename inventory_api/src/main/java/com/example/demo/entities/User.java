@@ -1,11 +1,14 @@
 package com.example.demo.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "users")
 public class User {
     @Id
@@ -21,35 +24,7 @@ public class User {
     @Column(name = "is_admin")
     private Boolean isAdmin;
 
-    public Integer getUserId() {
-        return userId;
-    }
+    @OneToMany(mappedBy = "user")
+    private List<BorrowedAssetEntity> borrowRecords;
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getUserPwd() {
-        return userPwd;
-    }
-
-    public void setUserPwd(String userPwd) {
-        this.userPwd = userPwd;
-    }
-
-    public Boolean getIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setIsAdmin(Boolean isAdmin) {
-        this.isAdmin = isAdmin;
-    }
 }
