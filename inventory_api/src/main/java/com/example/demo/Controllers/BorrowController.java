@@ -41,7 +41,7 @@ public class BorrowController {
 
             Integer assetQuantity = assetService.getAvailableQuantity(borrowDetails.get("assetId"));
             if(assetQuantity < borrowDetails.get("assetQuantity")){
-                return ResponseEntity.ok("Not enough assets");
+                return ResponseEntity.status(400).body("Not enough assets");
             }
             if(borrowedAssetService.checkPreviousRecord(borrowDetails.get("assetId"),
                     borrowDetails.get("userId"))){
@@ -61,7 +61,7 @@ public class BorrowController {
         }
         catch(Exception e){
             System.out.println("Exception occurred");
-            return ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.status(400).body(e.getMessage());
         }
         History historyObject=new History();
         historyObject.setAsset_name(asset_name);
@@ -86,10 +86,10 @@ public class BorrowController {
         try{
             BorrowedAssetEntity prevRecord = borrowedAssetService.getBorrowRecord(returnDetails);
             if(prevRecord == null){
-                return ResponseEntity.ok("Record not found");
+                return ResponseEntity.status(400).body("Record not found");
             }
             if(prevRecord.getBorQuantity() < returnDetails.get("assetQuantity")){
-                return ResponseEntity.ok("Record not found");
+                return ResponseEntity.status(400).body("Record not found");
             }
 //            Delete Record
             else if(prevRecord.getBorQuantity().equals(returnDetails.get("assetQuantity"))){
@@ -102,7 +102,7 @@ public class BorrowController {
             assetService.setAssetBorQuantity(returnDetails.get("assetId"), -returnDetails.get("assetQuantity"));
         }
         catch(Exception e){
-            return ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.status(400).body("Error");
         }
         History historyObject=new History();
         historyObject.setAsset_name(asset_name);

@@ -14,6 +14,10 @@ public interface UserInterfaceRepo extends JpaRepository<User, Integer> {
 
     @Query(value="SELECT USER_NAME FROM USERS WHERE USER_ID =:user_id",nativeQuery = true)
     String getAll(Integer user_id);
+    @Query(value = "SELECT user_pwd from users where user_id = :userId", nativeQuery = true)
+    String getPassword(Integer userId);
 
+    @Query(value = "SELECT is_admin from users where user_id = :userId", nativeQuery = true)
+    Boolean isAdmin(Integer userId);
 }
 

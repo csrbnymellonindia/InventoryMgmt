@@ -36,15 +36,19 @@ public class CategoryController {
         return categoryRepository.getAll();
     }
 
+    //    Category : categoryId, categoryName,
     @PostMapping(value="/new")
     public ResponseEntity<String> createNewCategory(@RequestBody Category category){
 
-       try {
-           categoryRepository.save(category);
-       }catch(Exception e){
-           return ResponseEntity.ok("Error Connecting To The Database.");
-       }
-       return ResponseEntity.ok("Category Created Successfully");
+        try {
+            if(categoryRepository.existsById(category.getCategoryId())){
+                return ResponseEntity.status(400).body("CategoryID exists");
+            }
+            categoryRepository.save(category);
+        }catch(Exception e){
+            return ResponseEntity.status(400).body("Error Connecting To The Database.");
+        }
+        return ResponseEntity.ok("Category Created Successfully");
 
 
     }
@@ -54,7 +58,7 @@ public class CategoryController {
         try {
             categoryRepository.save(category);
         }catch(Exception e){
-            return ResponseEntity.ok("Error Connecting To The Database.");
+            return ResponseEntity.status(400).body("Error Connecting To The Database.");
         }
         return ResponseEntity.ok("Category Updated Successfully");
     }
@@ -72,7 +76,7 @@ public class CategoryController {
             categoryRepository.deleteById(object.getId());
         }catch(Exception e){
             log.error(e.getMessage());
-            return ResponseEntity.ok("Error Connecting To The Database.");
+            return ResponseEntity.status(400).body("Error Connecting To The Database.");
         }
         History historyObject=new History();
         historyObject.setAsset_name(null);
